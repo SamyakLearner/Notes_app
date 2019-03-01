@@ -14,21 +14,21 @@ console.log('Command :',command);
 
 if(command === 'addNote')
 {
- notes.addnote(argv.title,argv.body);
+ notes.addnote(argv.title,argv.body);  //call to the addNote function present in notes.js file
 
 }
 
-else if(command === 'readnote')
+else if(command === 'readNote')
 {console.log('Reading a note : \n');
-notes.readnote(argv.title);}
+notes.readNote(argv.title);}          //call to the readNote function present in notes.js file
 
-else if(command === 'listnotes')
+else if(command === 'listNotes')
 {console.log('Listing all the notes present previously \n ');
-notes.listnotes();}
+notes.listNotes();}                  //call to the listNotes function present in notes.js file
 
-else if(command === 'deletenote')
+else if(command === 'deleteNote')
 {console.log('deleting a note \n ');
-notes.deletenote(argv.title);}
+notes.deleteNote(argv.title);}      //call to the deleteNotes function present in notes.js file
 
 else
 {console.log('Command not recognized !!! \n');}
