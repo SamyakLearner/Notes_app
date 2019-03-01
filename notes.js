@@ -4,7 +4,7 @@ let checkEmptyFile = [];
 
 const fs = require('fs');
 
-let fetchNotes = () =>                     
+let fetchNotes = () =>                       // used to fetch notes that are already present in the JSON file
 {
      
      try{
@@ -18,13 +18,13 @@ let fetchNotes = () =>
           console.log('typeof notes after checkEmptyfile :',checkEmptyFile);
 };
 
-let saveNotes = (notes) =>
+let saveNotes = (notes) =>                       // used to save notes onto the JSON file
 {
      fs.writeFileSync('data.json',JSON.stringify(notes));
 };
 
 
-let addnote = (title,body) =>
+let addnote = (title,body) =>                  //feature function for adding a new note received as input to the JSON file
 {   let notes = [];
     let note = {
      title,
@@ -66,7 +66,7 @@ let addnote = (title,body) =>
 let readnote = (title) => 
 {
     console.log('reading a note');
-};        //completion of readNote function
+};        
 
 let deletenote = (title) =>{
     console.log('deleting a note',title);
@@ -76,7 +76,7 @@ let listnotes = () => {
     console.log('listing all the notes');
 };
 
-module.exports = 
+module.exports =                // exporting all the functions so that they can be used in the app.js file
 {
      addnote,
      readnote,
