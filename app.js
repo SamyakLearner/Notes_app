@@ -1,9 +1,7 @@
 console.log('-----------------------------------Starting app---------------------------------------------');
 
-const fs = require('fs');
-const _ = require('lodash');
-const yargs = require('yargs');
 
+const yargs = require('yargs');
 const notes = require('./notes.js');
 
 const argv = yargs.argv;
@@ -12,24 +10,55 @@ let command = argv._[0];            //taking the command from the user and stori
 
 console.log('Command :',command);
 
-if(command === 'addNote')
+if(argv._.length>1)
+{console.log('Please give only one command at a time !');
+console.log(`${command} not executed`);
+console.log('Try again !!!');}
+
+
+
+else if(command === 'addNote')
 {
- notes.addnote(argv.title,argv.body);  //call to the addNote function present in notes.js file
+    if(argv.title === undefined)
+    {console.log('Please provide a valid title!');}
+    
+    else
+    {
+        notes.addNote(argv.title,argv.body);
+    }
 
 }
 
 else if(command === 'readNote')
-{console.log('Reading a note : \n');
-notes.readNote(argv.title);}          //call to the readNote function present in notes.js file
+{
+    if(argv.title === undefined)
+    {console.log('Please provide a valid title!');}
 
-else if(command === 'listNotes')
-{console.log('Listing all the notes present previously \n ');
-notes.listNotes();}                  //call to the listNotes function present in notes.js file
+    else
+    {
+        console.log('Reading the required note : \n');
+        notes.readNote(argv.title);
+    }
+}
+
+else if(command === 'listAllNotes')
+{
+    console.log('Listing all the notes present previously \n ');
+    notes.listAllNotes();
+}
 
 else if(command === 'deleteNote')
-{console.log('deleting a note \n ');
-notes.deleteNote(argv.title);}      //call to the deleteNotes function present in notes.js file
-
+{
+    if(argv.title === undefined)
+    {console.log('Please provide a valid title!');}
+    
+    else
+    {
+        console.log('deleting a note : \n ');
+        notes.deleteNote(argv.title);
+    }
+    
+}
 else
 {console.log('Command not recognized !!! \n');}
 
