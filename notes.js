@@ -1,54 +1,37 @@
 console.log('                     --------------Starting notes.js------------- \n');
 
-let checkEmptyFile = [];
-
 const fs = require('fs');
 
-let fetchNotes = () =>                       // used to fetch notes that are already present in the JSON file
+let fetchNotes = () =>                     
 {
-     
      try{
           let noteString = fs.readFileSync('data.json');
           return JSON.parse(noteString);
            }
      catch(err)
           {
-               console.log('An error ocurred !!!');
-          }  
-          console.log('typeof notes after checkEmptyfile :',checkEmptyFile);
+               return [];
+          }       
 };
 
-let saveNotes = (notes) =>                       // used to save notes onto the JSON file
+let saveNotes = (notes) =>
 {
      fs.writeFileSync('data.json',JSON.stringify(notes));
 };
 
 
-let addnote = (title,body) =>                  //feature function for adding a new note received as input to the JSON file
+let addNote = (title,body) =>
 {   let notes = [];
     let note = {
-     title,
-     body
-    };   
+                    title,
+                    body
+                };   
      
     
-     checkEmptyFile = fetchNotes();
-     
+     notes = fetchNotes();     
+     let duplicateNotes = notes.filter((note) => {     // filter function only provides the node for which                                                    // true is returned
 
-     if(checkEmptyFile !== undefined)
-     {notes = fetchNotes();}
-
-     if(checkEmptyFile === undefined){
-          console.log('entered the if block ');
-          notes.push(note);
-          console.log('typeof checkEmptyFile is :' ,typeof checkEmptyFile);
-     }
-     else if(checkEmptyFile !== undefined)
-     {  console.log('entered the elseif block ');
-     console.log('typeof checkEmptyFile is :' ,typeof checkEmptyFile);
-             let duplicateNotes = notes.filter((note) => {
-               console.log(note.title);
-               return note.title === title;
+               return note.title === title;            // if the title matches then only true is returned
           });
 
           if(duplicateNotes.length == 0)
@@ -58,30 +41,54 @@ let addnote = (title,body) =>                  //feature function for adding a n
           else
           {
                console.log('Note with the same title already exists!!! \n');
-          }
-     }    
+          }  
 
 };        //completion of addNote function
 
-let readnote = (title) => 
+let readNote = (title) => 
 {
     console.log('reading a note');
-};        
+    let notes = fetchNotes();
+    let sameNote = notes.filter((note) => {
+                   return note.title === title;
+     });
+     if(sameNote[0] === undefined)
+     {console.log('Note with this title does not exist')}
+     else
+     {console.log(`Title :  ${sameNote[0].title}`);
+     console.log(`Body  :  ${sameNote[0].body}`);
+     }
+};        //completion of readNote function
 
-let deletenote = (title) =>{
+let deleteNote = (title) =>{
     console.log('deleting a note',title);
+    let notes = fetchNotes();
+    let undeletedNotes = notes.filter((note) =>
+    {
+          return note.title !== title;
+    });
+    saveNotes(undeletedNotes);
+    if(notes.length === undeletedNotes.length)
+    {console.log('Note not found!')};
 };
 
-let listnotes = () => {
-    console.log('listing all the notes');
+let listAllNotes = () => {
+    console.log('listing all the notes :');
+    let receivedNotes = fetchNotes();
+    let index = 0;
+    while(index<receivedNotes.length)
+    {console.log(`Title : ${receivedNotes[index].title}`);
+     console.log(`Body  : ${receivedNotes[index].body}`);     
+     index++;     
+}
 };
 
-module.exports =                // exporting all the functions so that they can be used in the app.js file
+module.exports = 
 {
-     addnote,
-     readnote,
-     deletenote,
-     listnotes
+     addNote,
+     readNote,
+     deleteNote,
+     listAllNotes
 };
 
 console.log('                     --------------Closing notes.js------------- \n');
