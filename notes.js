@@ -1,4 +1,3 @@
-console.log('                     --------------Starting notes.js------------- \n');
 
 const fs = require('fs');
 
@@ -90,6 +89,4 @@ module.exports =
      deleteNote,
      listAllNotes
 };
-
-console.log('                     --------------Closing notes.js------------- \n');
 
