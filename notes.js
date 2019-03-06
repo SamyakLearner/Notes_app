@@ -2,10 +2,21 @@ console.log('                     --------------Starting notes.js------------- \
 
 const fs = require('fs');
 
+let displayNotes = (receivedArray) =>
+{
+     let index = 0;
+     while(index<receivedArray.length)
+     {
+          console.log(`Title :  ${receivedArray[index].title}`);
+          console.log(`Body  :  ${receivedArray[index].body} \n`);
+          index++;
+     }
+}
+
 let fetchNotes = () =>                     
 {
      try{
-          let noteString = fs.readFileSync('data.json');
+          let noteString = fs.readFileSync('notes.json');
           return JSON.parse(noteString);
            }
      catch(err)
@@ -16,7 +27,7 @@ let fetchNotes = () =>
 
 let saveNotes = (notes) =>
 {
-     fs.writeFileSync('data.json',JSON.stringify(notes));
+     fs.writeFileSync('notes.json',JSON.stringify(notes));
 };
 
 
@@ -37,6 +48,7 @@ let addNote = (title,body) =>
           if(duplicateNotes.length == 0)
           {    notes.push(note);
                saveNotes(notes);
+               console.log('Saved the note provided');
           }
           else
           {
@@ -47,40 +59,54 @@ let addNote = (title,body) =>
 
 let readNote = (title) => 
 {
-    console.log('reading a note');
     let notes = fetchNotes();
-    let sameNote = notes.filter((note) => {
+    let sameNote = notes.filter((note) => {                 // the note here is a new variable not the one 
+                                                            // that is declared in the addNote function 
+                                                            // (since it comes out of scope)
                    return note.title === title;
      });
      if(sameNote[0] === undefined)
      {console.log('Note with this title does not exist')}
      else
-     {console.log(`Title :  ${sameNote[0].title}`);
-     console.log(`Body  :  ${sameNote[0].body}`);
+     {
+          displayNotes(sameNote);
+     // console.log(`Title :  ${sameNote[0].title}`);
+     // console.log(`Body  :  ${sameNote[0].body}`);
      }
 };        //completion of readNote function
 
-let deleteNote = (title) =>{
-    console.log('deleting a note',title);
+let deleteNote = (title) =>
+{
     let notes = fetchNotes();
     let undeletedNotes = notes.filter((note) =>
     {
           return note.title !== title;
     });
+    let deletedNote = notes.filter((note) =>
+    {
+     return note.title === title;
+    });
     saveNotes(undeletedNotes);
+    
     if(notes.length === undeletedNotes.length)
-    {console.log('Note not found!')};
+    {console.log('Note not found!')}
+    else
+    {
+     console.log('Deleted note : \n');
+     displayNotes(deletedNote);
+    }
 };
 
 let listAllNotes = () => {
-    console.log('listing all the notes :');
+    console.log('listing all the notes : \n');
     let receivedNotes = fetchNotes();
-    let index = 0;
-    while(index<receivedNotes.length)
-    {console.log(`Title : ${receivedNotes[index].title}`);
-     console.log(`Body  : ${receivedNotes[index].body}`);     
-     index++;     
-}
+    displayNotes(receivedNotes);
+//     let index = 0;
+//     while(index<receivedNotes.length)
+//     {console.log(`Title : ${receivedNotes[index].title}`);
+//      console.log(`Body  : ${receivedNotes[index].body}`);     
+//      index++;     
+//     }
 };
 
 module.exports = 
